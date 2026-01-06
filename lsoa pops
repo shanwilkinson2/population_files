@@ -72,5 +72,7 @@ lsoa_pops2 <- lsoa_pops %>%
         )
          ) %>%
   select(-c(group)) %>%
+  mutate(msoa_name = str_sub(`LSOA 2021 Name`, 1, -2)) %>%
   relocate(c(sex, age), .before = value) %>%
+  relocate(msoa_name, .before = Total) %>%
   filter(`LAD 2023 Name` == "Bolton")
