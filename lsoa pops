@@ -3,9 +3,18 @@ library(readxl)
 library(tidyr)
 library(stringr)
 
+
 # lsoa pops from here 
 # https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/lowersuperoutputareamidyearpopulationestimates
+
+# house of commons library names from here
+# https://houseofcommonslibrary.github.io/msoanames/
+# xlsx
+
 # username is replaced by your username
+
+hocl_msoa <- read_xlsx("C:/Users/username/Downloads/MSOA-Names-2.2.xlsx",
+                       skip = 4)
 
 lsoa_pops <- read_xlsx("C:/Users/username/Downloads/sapelsoasyoa20222024.xlsx",
                        sheet = "Mid-2024 LSOA 2021",
@@ -48,7 +57,7 @@ lsoa_pops2 <- lsoa_pops %>%
            age<80 ~"age 75-79",
            age<85 ~"age 80-84",
            age>=85 ~"age 85+"
-        ),
+         ),
          agegroup_f = case_when(
            age<5 ~"age 00-04",
            age<10 ~"age 05-09",
@@ -69,10 +78,17 @@ lsoa_pops2 <- lsoa_pops %>%
            age<85 ~"age 80-84",
            age<90 ~"age 85-90",
            age>=90 ~"age 90+"
-        )
-         ) %>%
+         )
+  ) %>%
   select(-c(group)) %>%
   mutate(msoa_name = str_sub(`LSOA 2021 Name`, 1, -2)) %>%
   relocate(c(sex, age), .before = value) %>%
   relocate(msoa_name, .before = Total) %>%
   filter(`LAD 2023 Name` == "Bolton")
+
+# join to msoa hocl name
+
+lsoa_pops3 <- lsoa_pops2 %>%
+  left_join(hocl_msoa %>%
+              select(msoa21nm, msoa21hclnm),
+            by = c("msoa_name" = "msoa21nm"))
