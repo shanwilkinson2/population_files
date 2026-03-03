@@ -13,7 +13,7 @@ library(stringr)
 
 # username is replaced by your username
 
-hocl_msoa <- read_xlsx("C:/Users/username/Downloads/MSOA-Names-2.2.xlsx",
+hocl_msoa <- read_xlsx("C:/Users/username/Downloads/MSOA-Names-2.3.xlsx",
                        skip = 4)
 
 lsoa_pops <- read_xlsx("C:/Users/username/Downloads/sapelsoasyoa20222024.xlsx",
